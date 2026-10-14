@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+import os, sys, subprocess, pathlib
+
+if os.geteuid() != 0:
+    raise SystemExit("Run with sudo.")
+root = pathlib.Path("/opt/aster/current")
+env = os.environ.copy()
+for line in pathlib.Path("/etc/aster/config.env").read_text().splitlines():
+    if "=" in line:
+        k, v = line.split("=", 1)
+        env[k] = v
+# PGDG/SUSE server clients are not necessarily in the login/service PATH.
+if env.get("OWNCMD_PG_BINDIR"):
+    env["PATH"] = env["OWNCMD_PG_BINDIR"] + os.pathsep + env.get("PATH", os.defpath)
+args = sys.argv[1:]
+command = args[0] if args else "status"
+if command == "status":
+    print("URL:", env["ASTER_ORIGIN"])
+    for service in [
+        "postgresql",
+        "aster-api",
+        "aster-broker",
+        "aster-worker@1",
+        "caddy",
+    ]:
+        subprocess.run(["systemctl", "is-active", service])
+elif command == "logs":
+    subprocess.run(
+        [
+            "journalctl",
+            "-u",
+            "aster-api",
+            "-u",
+            "aster-worker@1",
+            "-u",
+            "aster-broker",
+            "-n",
+            "100",
+            "--no-pager",
+        ]
+    )
+elif command == "restart":
+    subprocess.run(
+        ["systemctl", "restart", "aster-api", "aster-broker", "aster-worker@1"],
+        check=True,
+    )
+elif command in (
+    "smoke",
+    "models",
+    "backup",
+    "reset-password",
+    "billing-pending",
+    "reconcile-usage",
+    "grant-admin",
+    "create-admin",
+):
+    os.chdir(root)
+    os.execve(
+        str(root / "venv/bin/python"),
+        [str(root / "venv/bin/python"), "-m", "app.operations", command] + args[1:],
+        env,
+    )
+else:
+    raise SystemExit(
+        "Usage: asterctl status|logs|restart|smoke [--live]|models|backup|reset-password EMAIL|grant-admin EMAIL|create-admin EMAIL|billing-pending|reconcile-usage ID COST EVIDENCE"
+    )

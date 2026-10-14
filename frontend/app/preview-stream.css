@@ -1,0 +1,51 @@
+.preview-display-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 11px;
+}
+.preview-display-bar > span {
+  margin-right: 5px;
+  font-weight: 600;
+}
+.preview-display-bar > button {
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  border-radius: 7px;
+  padding: 6px 10px;
+  font: inherit;
+  cursor: pointer;
+  min-height: 30px;
+}
+.preview-display-bar > button:hover {
+  background: var(--hover);
+}
+.preview-display-bar > button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  border-color: var(--border);
+  font-weight: 600;
+}
+.preview-display-bar > button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.preview-display-bar > small {
+  margin-left: auto;
+  white-space: nowrap;
+  font-size: 10px;
+}
+@media (max-width: 600px) {
+  .preview-display-bar {
+    padding: 6px 10px;
+  }
+  .preview-display-bar > small {
+    display: none;
+  }
+}

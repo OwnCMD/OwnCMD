@@ -1,0 +1,23 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+frontend/.next/
+frontend/out/
+.env
+*.env
+*.enc
+*.dump
+test-results/
+*.legacy
+
+# Local tools, credentials, reports and release output
+.env.*
+!.env.example
+.DS_Store
+coverage/
+htmlcov/
+*.tar.gz
+*.zip
