@@ -63,3 +63,15 @@ Use small verification tasks when configuring a new model or key. Model choices 
 
 When reporting an apparent error, retain timestamps, model IDs and the relevant sanitized record details. Do not include the provider API key or an entire private conversation. Cloud users can submit the evidence through Help & support. Community operators investigate their own provider and instance records.
 
+
+## Community dashboard controls
+
+The Overview, Activity and Provider rates tabs share the selected filters. Choose the last 7, 30 or 90 days, or Custom. Custom requires both a start and end date, with the start no later than the end. Date boundaries use UTC; the end date includes that full day. Incomplete ranges are not silently replaced by a default range.
+
+Filter by service and mode. More filters exposes model, provider, conversation, cost status, text search, minimum/maximum tokens and minimum/maximum cost. Reset filters clears these restrictions. Totals and charts reflect the filtered records, so a model filter can exclude title generation or search charged to other services.
+
+Overview includes total cost, requests, tokens, runtime, service breakdown, token mix, daily or cumulative trends and projections. Projections extrapolate recorded activity; they are not a provider quote or a spending guarantee. Activity shows individual records, details, sorting and pagination. Export filtered CSV exports all matching records, not only the current page. Missing final cost is pending rather than free.
+
+Provider rates displays the model catalog's input and output prices. Community presents these rates directly without multiplying them. Actual provider-reported settlement may differ because of caching, model routing or provider-specific accounting. Search is provider-reported; local browser and code infrastructure rates default to zero unless the operator configures allocation rates. These settings do not add an OwnCMD service fee.
+
+The page refreshes while visible. If loading fails, the error offers retry; check the date range and connectivity before comparing stale data. Conversation details include title-generation costs alongside other services. Community contains no credit balance, top-up button, payment history or credit ledger.

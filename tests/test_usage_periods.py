@@ -36,3 +36,28 @@ def test_30_day_period_matches_custom_and_can_switch_back(client):
         and custom["daily"] == values[30]["daily"]
     )
     assert client.get("/api/usage/export.csv?days=30").status_code == 200
+
+
+def test_ratecard_preserves_provider_prices(client, monkeypatch):
+    from app import providers
+
+    login(client)
+
+    async def catalog():
+        return {
+            providers.configured_model(mode): {
+                "name": "Fixture model",
+                "pricing": {"prompt": "0.000001", "completion": "0.000002"},
+            }
+            for mode in ("chat", "work")
+        }
+
+    monkeypatch.setattr(providers, "catalog", catalog)
+    # The public rate card must not depend on legacy commercial multipliers.
+    monkeypatch.setattr(billing, "MARKUP", 2)
+    result = client.get("/api/pricing")
+    assert result.status_code == 200
+    assert result.json()["models"]
+    for model in result.json()["models"]:
+        assert model["pricing"]["prompt"] == 0.000001
+        assert model["pricing"]["completion"] == 0.000002

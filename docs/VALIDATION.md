@@ -39,3 +39,16 @@ Existing SaaS deployments are deliberately rejected by the installer. No product
 - Shell syntax, Python compilation and the 315-asset frontend integrity check passed. The application UI/assets were not changed in this follow-up.
 - The actual environment correctly fails the read-only host check because it has no running systemd, Docker or gVisor. No host installation was attempted here.
 - Distribution selection and tool-layout logic were exercised using fixtures. Debian, Fedora, Arch, Rocky/Alma/RHEL and openSUSE were **not** booted or installed in this environment. Prepared-host capability acceptance is not production certification. OpenRC/runit and immutable hosts remain outside the native installer scope. See `LINUX.md` for exact prerequisites and service/firewall requirements.
+
+## Community UI 1.0.1 (2026-10-14)
+
+This update changes the Community application, not the marketing site. The following checks were rerun against the release source and rebuilt assets:
+
+- **21 focused backend tests passed**, covering raw provider costs, reconciliation, free default runtime allocation, date-range switching, rate cards, setup/invitations, permissions, key handling and last-owner protection. A new rate-card regression verifies that a legacy multiplier cannot change displayed provider prices.
+- **32 frontend tests passed**. Production build and integrity verification passed for **315 assets**. Python compilation and installer shell syntax passed.
+- Chromium exercised actual HTTP APIs: first-owner setup; write-only provider-key replacement; invitation signup; member model overrides; role promotion/demotion; cancellation, suspension and restoration; instance model selection and saved Auto defaults; custom Usage dates; model filters; sorting; CSV export and provider rates.
+- A provider cost of **$0.125** remained **$0.125** in the dashboard and filtered CSV. Adding a **$0.025** title operation produced **$0.15** total. No wallet/top-up controls were present.
+- Browser flows and layout checks passed at **320, 390, 768 and 1440 pixels**. Visual review caught and corrected squeezed advanced filters on phones; regression checks now assert that these controls do not overlap. Member identity and status also use separate rows on phones to prevent squeezed names. Light and dark rendering were inspected. No uncaught browser page errors occurred.
+- Account role/access actions use persisted member policy rather than implicitly saving draft model edits. Member inheritance uses the saved instance policy.
+
+These are focused regression results, not a new full-suite or penetration-test claim. The backend/browser database used disposable PGlite with pgvector and its socket multiplexer. Native PostgreSQL concurrency, clean Linux installation, systemd/gVisor/Caddy lifecycle and paid provider requests were not retested here; the deployment limits above still apply. Run the native PostgreSQL suite and host smoke checks before rollout. Browser regression source is included in `scripts/community_browser_checks.py`; it refuses non-test databases and occupied fixture ports.

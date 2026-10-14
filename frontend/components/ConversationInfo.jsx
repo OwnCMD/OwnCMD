@@ -7,7 +7,7 @@ const serviceName = (s) =>
   ({
     model: "AI responses",
     search: "Web search & page reads",
-    browser: "Cloud browser",
+    browser: "Browser workspace",
     code: "Coding sandbox",
     title: "Conversation titles",
     skill_embedding: "Skill embeddings",
@@ -89,20 +89,21 @@ function UsageDialog({ task, onClose, onChanged }) {
               <strong>{count(data.totals.output_tokens)}</strong>
             </div>
             <div>
-              <small>Charged · USD</small>
+              <small>Cost · USD</small>
               <strong>{money(data.totals.charge)}</strong>
             </div>
             <div>
-              <small>Reserved · USD</small>
+              <small>Pending estimate · USD</small>
               <strong>{money(data.totals.reserved)}</strong>
             </div>
           </div>
           <p className="muted">
             All-time conversation usage, including AI responses, web search,
-            page reads, tools and any workspace charges. Titles have no user
-            charge. Cached input: {count(data.totals.cached_tokens)} · Reasoning
-            output: {count(data.totals.reasoning_tokens)}. These are subsets of
-            the token totals. Reservations are separate from posted charges.
+            page reads, conversation titles, tools and any configured
+            infrastructure estimates. No OwnCMD markup is applied. Cached input:{" "}
+            {count(data.totals.cached_tokens)} · Reasoning output:{" "}
+            {count(data.totals.reasoning_tokens)}. These are subsets of the
+            token totals. Pending estimates are separate from recorded costs.
           </p>
           <Donut
             title="Cost by service"
@@ -114,13 +115,13 @@ function UsageDialog({ task, onClose, onChanged }) {
           />
           <div className="usage-table-wrap">
             <table>
-              <caption>All service charges · USD</caption>
+              <caption>All service costs · USD</caption>
               <thead>
                 <tr>
                   <th>Service</th>
                   <th>Activities</th>
-                  <th>Charged</th>
-                  <th>Reserved</th>
+                  <th>Cost</th>
+                  <th>Pending estimate</th>
                 </tr>
               </thead>
               <tbody>
@@ -135,8 +136,8 @@ function UsageDialog({ task, onClose, onChanged }) {
                       )}
                     </td>
                     <td data-label="Activities">{count(r.requests)}</td>
-                    <td data-label="Charged">{money(r.charge)}</td>
-                    <td data-label="Reserved">{money(r.reserved)}</td>
+                    <td data-label="Cost">{money(r.charge)}</td>
+                    <td data-label="Pending estimate">{money(r.reserved)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -144,10 +145,10 @@ function UsageDialog({ task, onClose, onChanged }) {
             {!data.services.length && <p>No provider costs recorded yet.</p>}
           </div>
           <details className="info-charge-details">
-            <summary>Charge status details</summary>
+            <summary>Cost status details</summary>
             <p className="muted">
               Every recorded service is included. Pending costs may change when
-              providers settle; reservations are not charged again.
+              providers settle; estimates are not additional costs.
             </p>
             <div className="usage-table-wrap">
               <table>
@@ -168,7 +169,7 @@ function UsageDialog({ task, onClose, onChanged }) {
                       </td>
                       <td data-label="Status">{humanLabel(r.status)}</td>
                       <td data-label="Activities">{count(r.requests)}</td>
-                      <td data-label="Charged">{money(r.charge)}</td>
+                      <td data-label="Cost">{money(r.charge)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -192,7 +193,7 @@ function UsageDialog({ task, onClose, onChanged }) {
                     <td>{m.model}</td>
                     <td data-label="Input">{count(m.input_tokens)}</td>
                     <td data-label="Output">{count(m.output_tokens)}</td>
-                    <td data-label="Charged">{money(m.charge)}</td>
+                    <td data-label="Cost">{money(m.charge)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -210,7 +211,9 @@ function UsageDialog({ task, onClose, onChanged }) {
                     <Icon name={r.kind === "code" ? "code" : "browser"} />
                     <span>
                       <strong>
-                        {r.kind === "code" ? "Coding sandbox" : "Cloud browser"}
+                        {r.kind === "code"
+                          ? "Coding sandbox"
+                          : "Browser workspace"}
                       </strong>
                       <small>
                         {humanLabel(r.status)} ·{" "}

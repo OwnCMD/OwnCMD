@@ -1621,7 +1621,7 @@ async def pricing(req: Request):
                         "name": data.get("name", id),
                         "auto": id == policy["models"][mode]["auto"],
                         "pricing": {
-                            k: float(v) * billing.MARKUP
+                            k: float(v)
                             for k, v in data.get("pricing", {}).items()
                             if k
                             in (

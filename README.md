@@ -2,7 +2,7 @@
 
 Self-hosted AI chat and a workspace that can browse, write files, run code and schedule work. Bring your own OpenRouter and Exa keys. Conversations, credentials and files stay in your instance; selected AI and search providers receive the content needed to process requests.
 
-**Community 1.0.** Derived from the supplied OwnCMD v27.3.2 SaaS installer. Read [validation](docs/VALIDATION.md) before production use.
+**Community 1.0.1.** Derived from the supplied OwnCMD v27.3.2 SaaS installer. Read [validation](docs/VALIDATION.md) before production use.
 
 ## Install on a dedicated Linux server
 

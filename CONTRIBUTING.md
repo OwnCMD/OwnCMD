@@ -45,3 +45,9 @@ For vulnerabilities, follow [SECURITY.md](SECURITY.md). For ordinary defects, us
 ## Linux portability
 
 Read [docs/LINUX.md](docs/LINUX.md) before adding distribution adapters. Keep detection read-only and keep all sandbox gates active in prepared-host mode. Tests in `tests/test_linux_host.py` cover package selection, PostgreSQL tool compatibility and safe rejection. Target-host installation tests are still required for each new distribution.
+
+## Community browser regression checks
+
+After rebuilding the frontend, install Playwright in your development virtual environment and install its Chromium browser (`python -m playwright install chromium`), or set `OWNCMD_BROWSER_BINARY` to an existing Chromium executable. Provision an **empty disposable** PostgreSQL database with pgvector whose name begins `aster_test`. Export `ASTER_DATABASE_URL` for that database, `ASTER_DATA` for a temporary directory, a new Fernet `ASTER_MASTER_KEY`, a test `ASTER_BROKER_KEY`, `ASTER_ORIGIN=http://127.0.0.1:8765` and `OWNCMD_SETUP_TOKEN=browser-test-token`.
+
+Run `.venv/bin/python scripts/community_browser_checks.py` from the source root. The runner starts and stops its own loopback fixture server, uses the real app/session/CSRF APIs and substitutes a deterministic model catalog. It creates test accounts and raw-cost records; no paid provider request is submitted. Do not run it against existing application data. Port 8765 must be free. Screenshots and server logs go to `test-results/community` (or `OWNCMD_BROWSER_OUTPUT`), which release packaging excludes. The script covers responsive settings, account actions, model persistence and Usage/CSV cost consistency.

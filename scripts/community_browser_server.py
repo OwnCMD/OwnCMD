@@ -20,14 +20,21 @@ from app import main, providers
 
 
 async def catalog():
-    return {
+    result = {
         providers.configured_model(mode): {
             "name": mode.title() + " model",
             "supported_parameters": ["tools"],
-            "pricing": {"prompt": "0", "completion": "0"},
+            "pricing": {"prompt": "0.000001", "completion": "0.000002"},
         }
         for mode in ("chat", "work")
     }
+    result["test/vision-model"] = {
+        "name": "Vision test model",
+        "supported_parameters": ["tools"],
+        "pricing": {"prompt": "0.000001", "completion": "0.000002"},
+        "architecture": {"input_modalities": ["text", "image"]},
+    }
+    return result
 
 
 providers.catalog = catalog

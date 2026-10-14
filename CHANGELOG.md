@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.1 — 2026-10-14
+
+- Rebuilt Community instance settings with responsive provider cards, searchable members, invitation and account dialogs, and separate model, resource and network sections.
+- Restored Cloud-style searchable model selection and explicit Auto defaults for both instance and member policies. Display provider rates without markup.
+- Restored detailed Usage controls: custom dates, advanced filters, charts, activity details, pagination and filtered CSV export, without credits or payments.
+- Isolated account actions from unsaved policy edits and used saved instance policy for member inheritance.
+- Corrected conversation title cost descriptions and retained raw provider accounting and zero default local runtime allocation.
+- Expanded the settings and usage guides and browser regression checks.
+
+
 ## 1.0.0 — 2026-10-14
 
 - Self-hosted Community edition with closed registration, one-time Owner setup and manual member invitations.
